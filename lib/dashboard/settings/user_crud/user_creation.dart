@@ -8,6 +8,8 @@ import 'package:gym_admin/widget/app_bar.dart';
 import 'package:gym_admin/widget/button.dart';
 import 'package:gym_admin/widget/custom_text_field.dart';
 
+import '../../../widget/text_button.dart';
+
 class UserCreation extends StatefulWidget {
   const UserCreation({Key? key}) : super(key: key);
 
@@ -48,11 +50,18 @@ class _UserCreationState extends State<UserCreation> {
             const SizedBox(
               height: defaultPaddingSize,
             ),
-            CustomButton(callback: () {
-              if(validation()) {
-                callService();
-              }
-            }, buttonText: "Submit")
+            SizedBox(
+              width: MediaQuery.of(context).size.width*0.3,
+              child: CustomTextButton(
+                padding: 16,
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                callback: () {
+                  if (validation()) {
+                    callService();
+                  }
+                }, text: 'Save',),
+            )
           ],
         ),
       ),
@@ -88,9 +97,7 @@ class _UserCreationState extends State<UserCreation> {
 
     if (response.status == ApiCall.responseSuccess) {
       Util.snackBar(response.message, context);
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) {
-        return const Dashboard();
-      }), (route) => false);
+      Navigator.pop(context,true);
 
     } else if (response.status == ApiCall.responseFail) {
       Util.snackBar(response.message, context);

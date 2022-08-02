@@ -12,28 +12,41 @@ class CustomTextButton extends StatelessWidget {
   double fontSize;
   Color color;
   double padding;
-
+  Color borderColor;
+  Color foregroundColor;
+  Color backgroundColor;
   CustomTextButton(
       {
         Key? key,
         required this.text,
         required this.callback,
-      this.fontWeight = FontWeight.normal,
-      this.fontSize = 14.0,
+      this.fontWeight = FontWeight.bold,
+      this.fontSize = 16.0,
       this.color = Colors.black,
-      this.padding = defaultPaddingSize}) : super(key: key);
+        this.foregroundColor = Colors.blue,
+        this.borderColor = Colors.blue,
+        this.backgroundColor = Colors.white,
+      this.padding = defaultPaddingSize/2}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      style: ButtonStyle(
-          padding: MaterialStateProperty.all(EdgeInsets.all(padding))),
-      onPressed: callback,
-      child: Text(
-        text,
-        style:
-            TextStyle(fontWeight: fontWeight, fontSize: fontSize, color: color),
-      ),
+        child: Text(
+            text,
+            style: TextStyle(fontSize: 14)
+        ),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(backgroundColor),
+            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(padding)),
+            foregroundColor: MaterialStateProperty.all<Color>(foregroundColor),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0),
+                    side: BorderSide(color: borderColor)
+                )
+            )
+        ),
+        onPressed: callback
     );
   }
 }

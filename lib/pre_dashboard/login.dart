@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:gym_admin/api/api_call.dart';
 import 'package:gym_admin/data/session_manager.dart';
 import 'package:gym_admin/pre_dashboard/otp_screen.dart';
 import 'package:gym_admin/util.dart';
 import 'package:gym_admin/widget/button.dart';
 
+import '../widget/text_button.dart';
 import 'model/login_response.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -50,47 +52,80 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(defaultPaddingSize),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const SizedBox(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: const EdgeInsets.all(defaultPaddingSize),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  SizedBox(height : MediaQuery.of(context).size.height*0.15),
+                  Image(
                     height: 250,
-                    child: Image(
-                      image: AssetImage(
-                        ImagePath.logo,
-                      ),
-                      fit: BoxFit.cover,
-                    )),
-                TextFormField(
-                  controller: nameController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Phone Number',
-                    hintText: 'Enter the Phone Number',
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: Colors.blue,
+                    image: AssetImage(
+                      ImagePath.logo,
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                 SizedBox(height : MediaQuery.of(context).size.height*0.10),
+                  TextFormField(
+                    controller: nameController,
+                    keyboardType: TextInputType.number,
+
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(left: 24),
+                        focusedBorder:  OutlineInputBorder(
+                          // width: 0.0 produces a thin "hairline" border
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide:  BorderSide(color: greyColor, width: 0.0),
+                        ),
+                        errorBorder:  OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          // width: 0.0 produces a thin "hairline" border
+                          borderSide:  BorderSide(color: greyColor, width: 0.0),
+                        ),
+                        disabledBorder:  OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          // width: 0.0 produces a thin "hairline" border
+                          borderSide:  BorderSide(color: greyColor, width: 0.0),
+                        ),
+                        enabledBorder:  OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          // width: 0.0 produces a thin "hairline" border
+                          borderSide:  BorderSide(color: greyColor, width: 0.0),
+
+                        ),
+                        border:OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                        ),
+                        filled: true,
+                        fillColor: greyColor,
+                        hintText: "Mobile Number",
+                        hintStyle: TextStyle(color: Colors.black87)
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: defaultPaddingSize,
-                ),
-                CustomButton(
-                  callback: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (validate()) {
-                        userLogin();
-                      }
-                    }
-                  },
-                  buttonText: 'Next',
-                ),
-              ],
+                  const SizedBox(
+                    height: defaultPaddingSize,
+                  ),
+                  Container(
+                    width: 100,
+                    child: CustomTextButton(
+                      padding: 12,
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      callback: () {
+                        if (_formKey.currentState!.validate()) {
+                          if (validate()) {
+                            userLogin();
+                          }
+                        }
+                      },
+                      text: 'Next',
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -70,9 +70,11 @@ final kBoxDecorationStyleNoColor = BoxDecoration(
     border: Border.all(color: Colors.grey.withOpacity(0.5))
 );
 
-Color backgroundColor = HexColor.fromHex('#F8F8F8');
+Color backgroundColor = Colors.white;
 
 Color buttonColor = Colors.blue;
+
+Color greyColor = HexColor.fromHex("#F1F3FA");
 
 Color buttonColor2 = Colors.blue;
 

@@ -8,6 +8,8 @@ import 'package:gym_admin/widget/app_bar.dart';
 import 'package:gym_admin/widget/button.dart';
 import 'package:gym_admin/widget/custom_text_field.dart';
 
+import '../../../widget/text_button.dart';
+
 class WorkoutCreate extends StatefulWidget {
   const WorkoutCreate({Key? key}) : super(key: key);
 
@@ -44,11 +46,18 @@ class _WorkoutCreateState extends State<WorkoutCreate> {
             const SizedBox(
               height: defaultPaddingSize / 2,
             ),
-            CustomButton(
+            SizedBox(
+              width: MediaQuery.of(context).size.width*0.3,
+              child: CustomTextButton(
+                padding: 16,
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
                 callback: () {
-                  callService();
-                },
-                buttonText: "Save")
+                  if (validation()) {
+                    callService();
+                  }
+                }, text: 'Save',),
+            )
           ],
         ),
       ),
@@ -84,11 +93,7 @@ class _WorkoutCreateState extends State<WorkoutCreate> {
     if (response.status == ApiCall.responseSuccess) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(response.message)));
-
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) {
-        return const Dashboard();
-      }), (route) => false);
+      Navigator.of(context).pop(true);
     } else if (response.status == ApiCall.responseFail) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(response.message)));

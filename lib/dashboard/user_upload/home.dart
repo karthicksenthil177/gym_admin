@@ -30,35 +30,29 @@ class _HomeState extends State<Home> {
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
-          height: defaultPaddingSize,
+        AppBar(
+          title : Text("Hello!",style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+          elevation: 0,
+          backgroundColor: backgroundColor,
+          leading: Image.asset("assets/images/logo.png"),
+          actions: [IconButton(onPressed: () {
+          setState(() {
+            response = ApiCall().userUploadedMealList();
+          });
+        }, icon: const Icon(Icons.refresh,color: Colors.black,))],),
+        Container(
+            height: MediaQuery.of(context).size.height*0.1,
+            width: double.infinity,
+            margin: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+              image: AssetImage("assets/images/meal.png")))
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 120,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(defaultPaddingSize / 1.5),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(defaultPaddingSize * 1.5),
-                  bottomRight: Radius.circular(defaultPaddingSize * 1.5),
-                ),
-              ),
-              child: const Text(
-                "Today's List",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            IconButton(onPressed: () {
-              setState(() {
-                response = ApiCall().userUploadedMealList();
-              });
-            }, icon: const Icon(Icons.refresh))
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 8,),
+          child: Text("Today's List",style: TextStyle(fontWeight: FontWeight.bold),),
         ),
         userUploadList(),
       ],
@@ -84,49 +78,49 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         if(snapshot.data!.data.elementAt(index).imageStatus != ApiCall.responseFail) {
                           Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+
                             return VerifyImage(meals : snapshot.data!.data.elementAt(index));
                           }));
+                        } else {
+                          Util.snackBar("Photo not uploaded", context);
                         }
                       },
-                      child: Card(
+                      child: Container(
+                        padding: const EdgeInsets.all(defaultPaddingSize),
                         margin:
-                        const EdgeInsets.symmetric(vertical: defaultPaddingSize / 4),
-                        child: Container(
-                           padding: const EdgeInsets.all(defaultPaddingSize),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(snapshot.data!.data.elementAt(index).userName!),
-                                  GradientText(
-                                    child:  Text(
-                                      snapshot.data!.data.elementAt(index).status,
-                                      style: const TextStyle(color: Colors.white, fontSize: 10),
-                                    ),
-                                    gradient: LinearGradient(
-                                      colors: <Color>[
-                                        Colors.lightBlue,
-                                        Colors.lightBlue.withOpacity(0.5),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: defaultPaddingSize / 2,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
+                        const EdgeInsets.all(defaultPaddingSize/4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: greyColor,
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(snapshot.data!.data.elementAt(index).userName!),
+                                Text(
+                                  snapshot.data!.data.elementAt(index).status,
+                                  style: TextStyle(color: Colors.black54, fontSize: 14,fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: defaultPaddingSize / 2,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
                                     snapshot.data!.data.elementAt(index).name,
-                                    style: TextStyle(color: lightBlackColor, fontSize: 12),
+                                    style: TextStyle(color: lightBlackColor),
+                                    maxLines: 10,
                                   ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     );

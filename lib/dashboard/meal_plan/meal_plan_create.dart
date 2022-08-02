@@ -4,6 +4,7 @@ import 'package:gym_admin/util.dart';
 import 'package:gym_admin/widget/app_bar.dart';
 import 'package:gym_admin/widget/button.dart';
 import 'package:gym_admin/widget/custom_text_field.dart';
+import 'package:gym_admin/widget/text_button.dart';
 
 class MealPlanCreate extends StatefulWidget {
   final bool isMeal;
@@ -40,14 +41,31 @@ class _MealPlanCreateState extends State<MealPlanCreate> {
             const SizedBox(
               height: defaultPaddingSize,
             ),
-            CustomButton(callback: () {
-              if(validation()) {
-                //callService();
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) { 
-                  return  ScheduleDays(planName: _planNameController.text,purpose: _purposeController.text,isMeal : widget.isMeal);
-                }));
-              }
-            }, buttonText: "Create")
+            Row(children: [
+              Expanded(
+                child: CustomTextButton(
+                    padding: 16,
+                    color: Colors.white,
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    text: "Create", callback: (){
+                  if(validation()) {
+                    //callService();
+                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                      return  ScheduleDays(planName: _planNameController.text,purpose: _purposeController.text,isMeal : widget.isMeal);
+                    }));
+                  }
+                }),
+              ),
+              SizedBox(width: 16,),
+              Expanded(
+                child: CustomTextButton(
+                    padding: 16,
+                    text: "Cancel", callback: (){
+                      Navigator.of(context).pop();
+                }),
+              ),
+            ],),
           ],
         ),
       ),

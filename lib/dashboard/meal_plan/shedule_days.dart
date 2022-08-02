@@ -7,8 +7,8 @@ import 'package:gym_admin/dashboard/settings/workout_crud/model/workout_create_m
 import 'package:gym_admin/data/session_manager.dart';
 import 'package:gym_admin/util.dart';
 import 'package:gym_admin/widget/app_bar.dart';
-import 'package:gym_admin/widget/button.dart';
 import 'package:gym_admin/widget/gradient_text.dart';
+import 'package:gym_admin/widget/text_button.dart';
 
 class ScheduleDays extends StatefulWidget {
   final String planName;
@@ -123,7 +123,8 @@ class _ScheduleDaysState extends State<ScheduleDays> {
                               },),
                           ),
                         ),*/
-                            Padding(
+                            Container(
+                              alignment: Alignment.topLeft,
                               padding: const EdgeInsets.all(defaultPaddingSize),
                               child: Text(
                                 snapshot.data!.data
@@ -139,9 +140,16 @@ class _ScheduleDaysState extends State<ScheduleDays> {
                                 shrinkWrap: true,
                                 itemCount: uploadEachTime.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return Card(
-                                    margin: const EdgeInsets.all(
-                                        defaultPaddingSize / 4),
+                                  return Container(
+
+                                     alignment: Alignment.center,
+                                     decoration: BoxDecoration(
+                                         color: greyColor,
+                                       borderRadius: BorderRadius.circular(10)
+                                     ),
+                                     margin: const EdgeInsets.symmetric(
+                                       vertical: defaultPaddingSize/4,
+                                         horizontal : defaultPaddingSize),
                                     child: Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Row(
@@ -160,29 +168,15 @@ class _ScheduleDaysState extends State<ScheduleDays> {
                                               padding:
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 4),
-                                              child: GradientText(
-                                                child: Text(
-                                                  widget.isMeal ? uploadEachTime
+                                              child: widget.isMeal ? uploadEachTime
                                                           .elementAt(index)
                                                           .isActive!
-                                                      ? 'Assigned'
-                                                      : 'Assign Meal' : uploadEachTime
+                                                      ? Icon(Icons.check,color: Colors.green,)
+                                                      : Icon(Icons.add) : uploadEachTime
                                                       .elementAt(index)
                                                       .isActive!
-                                                      ? 'Assigned'
-                                                      : 'Assign',
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 10),
-                                                ),
-                                                gradient: LinearGradient(
-                                                  colors: <Color>[
-                                                    Colors.lightBlue,
-                                                    Colors.lightBlue
-                                                        .withOpacity(0.5),
-                                                  ],
-                                                ),
-                                              ),
+                                                      ? Icon(Icons.check,color: Colors.green,)
+                                                      : Icon(Icons.add),
                                             ),
                                           ),
                                         ],
@@ -249,9 +243,9 @@ class _ScheduleDaysState extends State<ScheduleDays> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           selectedIndex > 0
-              ? SizedBox(
-                  width: 100,
-                  child: CustomButton(
+              ? Expanded(
+                  child: CustomTextButton(
+                      padding: 16,
                       callback: () {
                         setState(() {
                           selectedIndex = selectedIndex - 1;
@@ -259,12 +253,13 @@ class _ScheduleDaysState extends State<ScheduleDays> {
                           isPrevious = true;
                         });
                       },
-                      buttonText: "Previous"),
+                      text : "Previous"),
                 )
-              : const SizedBox(),
-          SizedBox(
-            width: 100,
-            child: CustomButton(
+              : Expanded(child: const SizedBox()),
+          SizedBox(width: 16,),
+          Expanded(
+            child: CustomTextButton(
+                padding: 16,
                 callback: () {
                   setState(() {
                     if (selectedIndex < length - 1) {
@@ -282,7 +277,9 @@ class _ScheduleDaysState extends State<ScheduleDays> {
                     }
                   });
                 },
-                buttonText: selectedIndex < length - 1 ? "Next" : "Submit"),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                text: selectedIndex < length - 1 ? "Next" : "Submit"),
           )
         ],
       ),
@@ -291,6 +288,7 @@ class _ScheduleDaysState extends State<ScheduleDays> {
 
   void _modalBottomSheetMenu(int index) {
     showModalBottomSheet(
+      backgroundColor: greyColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(defaultPaddingSize),
@@ -321,8 +319,9 @@ class _ScheduleDaysState extends State<ScheduleDays> {
                               uploadEachTime.elementAt(index).id = id!;
                               Navigator.of(context).pop();
                             } else {
+                              uploadEachTime.elementAt(index).isActive = true;
+                              uploadEachTime.elementAt(index).id = id!;
                               Navigator.of(context).pop();
-                              Util.snackBar("Already Updated", context);
                             }
                           });
                         });
@@ -425,21 +424,42 @@ class _SearchMealState extends State<SearchMeal> {
               top: defaultPaddingSize,
               left: defaultPaddingSize,
               right: defaultPaddingSize),
-          child: const Text("Choose"),
+          child: const Text("Choose",style: TextStyle(fontWeight: FontWeight.w500),),
         ),
         Container(
-          height: 35,
+          height: 50,
           margin: const EdgeInsets.all(defaultPaddingSize),
           child: TextField(
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.only(
-                  left: defaultPaddingSize,
-                  right: defaultPaddingSize,
-                  bottom: defaultPaddingSize / 2,
-                  top: defaultPaddingSize / 2),
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(left: 12),
+                focusedBorder:  OutlineInputBorder(
+                  // width: 0.0 produces a thin "hairline" border
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide:  BorderSide(color: greyColor, width: 0.0),
+                ),
+                errorBorder:  OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                  // width: 0.0 produces a thin "hairline" border
+                  borderSide:  BorderSide(color: greyColor, width: 0.0),
+                ),
+                disabledBorder:  OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                  // width: 0.0 produces a thin "hairline" border
+                  borderSide:  BorderSide(color: greyColor, width: 0.0),
+                ),
+                enabledBorder:  OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                  // width: 0.0 produces a thin "hairline" border
+                  borderSide:  BorderSide(color: greyColor, width: 0.0),
+
+                ),
+                border:OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                filled: true,
+                fillColor: greyColor,
               hintText: "Search",
               suffixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
             ),
             onChanged: (value) {
               setState(() {
@@ -466,9 +486,15 @@ class _SearchMealState extends State<SearchMeal> {
                       widget.callback!(_searchList.elementAt(index).id,
                           _searchList.elementAt(index).name);
                     },
-                    leading: const Icon(Icons.account_balance_outlined),
-                    title: Text(_searchList.elementAt(index).name),
-                    trailing: const Icon(Icons.keyboard_arrow_right));
+                    title: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(width: 4,),
+                        Icon(Icons.circle,size: 12,color: greyColor,),
+                        SizedBox(width: 8,),
+                        Expanded(child: Text(_searchList.elementAt(index).name,maxLines: 5,)),
+                      ],
+                    ),);
               }),
         ),
       ],

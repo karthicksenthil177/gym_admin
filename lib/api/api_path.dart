@@ -1,5 +1,5 @@
 class ApiPath {
-  static const String baseUrl = "https://test-gym-gem.herokuapp.com";
+  static const String baseUrl = "https://gymgem.fit";
 
   static final Uri login = Uri.parse('$baseUrl/trainer/trainer_login');
 

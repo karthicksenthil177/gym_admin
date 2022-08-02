@@ -17,8 +17,35 @@ class CustomTextField extends StatelessWidget {
         controller: controller,
         keyboardType : textInputType,
         decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-            label: Text(label),
+          contentPadding: EdgeInsets.only(left: 12),
+          focusedBorder:  OutlineInputBorder(
+            // width: 0.0 produces a thin "hairline" border
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide:  BorderSide(color: greyColor, width: 0.0),
+          ),
+          errorBorder:  OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            // width: 0.0 produces a thin "hairline" border
+            borderSide:  BorderSide(color: greyColor, width: 0.0),
+          ),
+          disabledBorder:  OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            // width: 0.0 produces a thin "hairline" border
+            borderSide:  BorderSide(color: greyColor, width: 0.0),
+          ),
+          enabledBorder:  OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            // width: 0.0 produces a thin "hairline" border
+            borderSide:  BorderSide(color: greyColor, width: 0.0),
+
+          ),
+          border:OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          filled: true,
+          fillColor: greyColor,
+            hintText: label,
+          hintStyle: TextStyle(color: Colors.black87)
         ),
       ),
     );

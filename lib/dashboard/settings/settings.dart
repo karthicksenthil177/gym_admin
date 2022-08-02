@@ -6,6 +6,8 @@ import 'package:gym_admin/dashboard/settings/workout_crud/workout_list.dart';
 import 'package:gym_admin/data/session_manager.dart';
 import 'package:gym_admin/pre_dashboard/login.dart';
 import 'package:gym_admin/util.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_admin/widget/app_bar.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -20,29 +22,11 @@ class _SettingsState extends State<Settings> {
     return SafeArea(child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
-          height: defaultPaddingSize,
-        ),
-        Container(
-          width: 100,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(defaultPaddingSize / 1.5),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(defaultPaddingSize * 1.5),
-              bottomRight: Radius.circular(defaultPaddingSize * 1.5),
-            ),
-          ),
-          child: const Text(
-            "Accounts",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
+        CustomAppBar(title: "Accounts"),
         ListTile(
           title: const Text(
-            "Profile",),
-          trailing: const Icon(Icons.chevron_right),
+            "Profile",style: TextStyle(fontWeight: FontWeight.bold),),
+          leading: CircleAvatar(backgroundColor: greyColor,child: SvgPicture.asset("assets/icons/profile.svg",height: 20,),radius: 24,),
           subtitle: const Text(
             "View your Profile",),
           onTap: (){
@@ -52,36 +36,37 @@ class _SettingsState extends State<Settings> {
           },
         ),
         ListTile(
-            title: const Text("Users"),
-            subtitle: const Text("Add/Update User to your list"),
-            trailing: const Icon(Icons.chevron_right),
+            title: const Text("Users",style: TextStyle(fontWeight: FontWeight.bold),),
+          leading: CircleAvatar(backgroundColor: greyColor,child: SvgPicture.asset("assets/icons/user.svg",height: 20,),radius: 24,),
+          subtitle: const Text("Add/Update User to your list"),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const UserList();
               }));
             },),
         ListTile(
-          title: const Text("Meals"),
+          title: const Text("Meals",style: TextStyle(fontWeight: FontWeight.bold),),
+          leading: CircleAvatar(backgroundColor: greyColor,child: SvgPicture.asset("assets/icons/meal.svg",color:Colors.black,height: 20,),radius: 24,),
           subtitle: const Text("Add/Update Meal to your list"),
-          trailing: const Icon(Icons.chevron_right),
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const MealList();
             }));
           },),
         ListTile(
-          title: const Text("Workouts"),
+          title: const Text("Workouts",style: TextStyle(fontWeight: FontWeight.bold),),
+          leading: CircleAvatar(backgroundColor: greyColor,child: SvgPicture.asset("assets/icons/workout.svg",height: 15,width: 20,color: Colors.black,),radius: 24,),
           subtitle: const Text("Add/Update Workout to your list"),
-          trailing:const  Icon(Icons.chevron_right),
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const WorkoutList();
             }));
           },),
         ListTile(
-          title:const  Text("Logout"),
+          title:const  Text("Logout",style: TextStyle(fontWeight: FontWeight.bold),),
           subtitle: const Text("Logout from Gym Gem"),
-          trailing:const  Icon(Icons.chevron_right),
+          leading: CircleAvatar(backgroundColor: greyColor,child: SvgPicture.asset("assets/icons/logout.svg",height: 20,),radius: 24,),
+
           onTap: () {
 
             showDialog(

@@ -5,8 +5,10 @@ import 'package:gym_admin/dashboard/settings/profile/profile_detail_response.dar
 import 'package:gym_admin/dashboard/settings/user_crud/model/add_user_response.dart';
 import 'package:gym_admin/data/session_manager.dart';
 import 'package:gym_admin/util.dart';
+import 'package:gym_admin/widget/app_bar.dart';
 import 'package:gym_admin/widget/button.dart';
 import 'package:gym_admin/widget/custom_text_field.dart';
+import 'package:gym_admin/widget/text_button.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -42,12 +44,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile", style: TextStyle(color: Colors.black),),
-        backgroundColor: backgroundColor,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
+      appBar: CustomAppBar(title: "Profile"),
       backgroundColor: backgroundColor,
       body: FutureBuilder<ProfileDetailsResponse>(
         future: response,
@@ -69,11 +66,18 @@ class _ProfileState extends State<Profile> {
                     CustomTextField(controller: _emailCtrl, label: "Email"),
                     CustomTextField(controller: _phoneNumber, label: "Phone Number"),
                     const SizedBox(height: defaultPaddingSize / 2,),
-                    CustomButton(callback: () {
-                      if (validation()) {
-                        callService();
-                      }
-                    }, buttonText: "Update")
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width*0.3,
+                      child: CustomTextButton(
+                        padding: 16,
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.blue,
+                        callback: () {
+                        if (validation()) {
+                          callService();
+                        }
+                      }, text: 'Update',),
+                    )
                   ],
                 ),
               );

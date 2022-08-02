@@ -7,8 +7,9 @@ class CustomButton extends StatelessWidget {
   final VoidCallback callback;
   final String buttonText;
   final Color? color;
+  final double? border;
 
-  const CustomButton({Key? key, required this.callback,required this.buttonText,this.color}) : super(key: key);
+  const CustomButton({Key? key, required this.callback,required this.buttonText,this.color,this.border}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class CustomButton extends StatelessWidget {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius:
-                          BorderRadius.circular(defaultPaddingSize / 2),
+                          BorderRadius.circular(border ?? defaultPaddingSize / 2),
                       side: BorderSide.none)),
               padding: MaterialStateProperty.all(
                   const EdgeInsets.symmetric(vertical: defaultPaddingSize)),

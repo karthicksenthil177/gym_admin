@@ -31,10 +31,15 @@ class _UserListState extends State<UserList> {
         title: "Users",
       ),
       backgroundColor: backgroundColor,
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+      floatingActionButton: FloatingActionButton(onPressed: () async {
+       final result = await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
           return const UserCreation();
         }));
+       if(result){
+         setState(() {
+           response = ApiCall().userList();
+         });
+       }
       },
       child: const Icon(Icons.add),),
       body: Padding(padding: const EdgeInsets.all(defaultPaddingSize),
@@ -49,37 +54,41 @@ class _UserListState extends State<UserList> {
                 return ListView.builder(
                   itemCount: snapshot.data!.data.length,
                   itemBuilder: (BuildContext context, int index) {
-                  return Card(
+                  return Container(
+                    padding: const EdgeInsets.all(defaultPaddingSize),
                     margin:
                     const EdgeInsets.symmetric(vertical: defaultPaddingSize / 4),
-                    child: Container(
-                      padding: const EdgeInsets.all(defaultPaddingSize),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(snapshot.data!.data.elementAt(index).name),
-                              Text(
-                                snapshot.data!.data.elementAt(index).mobile,
-                                style: const TextStyle(color: Colors.grey, fontSize: 10),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: defaultPaddingSize / 2,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                               snapshot.data!.data.elementAt(index).email,
-                                style: TextStyle(color: lightBlackColor, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: greyColor,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(snapshot.data!.data.elementAt(index).name,style: const TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.bold),),
+                            Text(
+                              snapshot.data!.data.elementAt(index).mobile,
+                              style: const TextStyle(color: Colors.black45, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: defaultPaddingSize / 2,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                             snapshot.data!.data.elementAt(index).email,
+                              style: const TextStyle(color: Colors.black45, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   );
                 },);

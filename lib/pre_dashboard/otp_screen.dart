@@ -6,6 +6,8 @@ import 'package:gym_admin/pre_dashboard/model/login_response.dart';
 import 'package:gym_admin/util.dart';
 import 'package:gym_admin/widget/button.dart';
 
+import '../widget/text_button.dart';
+
 TextEditingController controller = TextEditingController();
 List<TextEditingController> controllers = [];
 
@@ -61,20 +63,89 @@ class _OtpScreenState extends State<OtpScreen> {
           padding: const EdgeInsets.all(defaultPaddingSize),
           child: Column(
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
-                //width: 20,
+              SizedBox(height : MediaQuery.of(context).size.height*0.15),
+              Image(
+                height: 250,
+                image: AssetImage(
+                  ImagePath.logo,
+                ),
+                fit: BoxFit.cover,
               ),
-              const Text(
-                "OTP Verification",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
+              SizedBox(height : MediaQuery.of(context).size.height*0.10),
+              TextFormField(
+                controller: controller,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: 24),
+                    focusedBorder:  OutlineInputBorder(
+                      // width: 0.0 produces a thin "hairline" border
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide:  BorderSide(color: greyColor, width: 0.0),
+                    ),
+                    errorBorder:  OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      // width: 0.0 produces a thin "hairline" border
+                      borderSide:  BorderSide(color: greyColor, width: 0.0),
+                    ),
+                    disabledBorder:  OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      // width: 0.0 produces a thin "hairline" border
+                      borderSide:  BorderSide(color: greyColor, width: 0.0),
+                    ),
+                    enabledBorder:  OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      // width: 0.0 produces a thin "hairline" border
+                      borderSide:  BorderSide(color: greyColor, width: 0.0),
+
+                    ),
+                    border:OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                    ),
+                    filled: true,
+                    fillColor: greyColor,
+                    hintText: "OTP",
+                    hintStyle: TextStyle(color: Colors.black87)
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    Util.snackBar("Please enter valid OTP!", context);
+                  }
+                  return null;
+                },
               ),
               const SizedBox(
-                height: defaultPaddingSize * 2,
-                //width: 20,
+                height: defaultPaddingSize,
+              ),
+              Container(
+                width: 100,
+                child: CustomTextButton(
+                  padding: 12,
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  callback: () {
+                    otpVerification();
+                  },
+                  text: 'Continue',
+                ),
+              ),
+              const SizedBox(
+                height: defaultPaddingSize/2,
+              ),
+              InkWell(
+                onTap: () {
+                  resendOtp();
+                },
+                child: Container(
+                  child: RichText(
+                    text: TextSpan(
+                        text: ' Resend OTP',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        )),
+                  ),
+                ),
               ),
               /* Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -113,54 +184,10 @@ class _OtpScreenState extends State<OtpScreen> {
 
                   ],
               ),*/
-              TextFormField(
-                controller: controller,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter OTP',
-                  //hintText: '+91............',
-                  prefixIcon: Icon(
-                    Icons.password,
-                    color: Colors.blue,
-                  ),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    Util.snackBar("Please enter valid Number!", context);
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              InkWell(
-                onTap: () {
-                  resendOtp();
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(left: 250),
-                  child: RichText(
-                    text: TextSpan(
-                        text: ' Resend OTP',
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        )),
-                  ),
-                ),
-              ),
+
               const SizedBox(
                 height: 30,
               ),
-              CustomButton(
-                buttonText: 'Continue',
-                callback: () {
-                  otpVerification();
-                },
-              )
             ],
           ),
         ),

@@ -8,6 +8,8 @@ import 'package:gym_admin/widget/app_bar.dart';
 import 'package:gym_admin/widget/button.dart';
 import 'package:gym_admin/widget/custom_text_field.dart';
 
+import '../../../widget/text_button.dart';
+
 class MealCreate extends StatefulWidget {
   const MealCreate({Key? key}) : super(key: key);
 
@@ -32,23 +34,26 @@ class _MealCreateState extends State<MealCreate> {
         child: Column(
           children: [
             CustomTextField(controller: _nameController, label: "Meal Name"),
-            const SizedBox(
-              height: defaultPaddingSize / 2,
-            ),
+
             CustomTextField(
                 controller: _descriptionController, label: "Description"),
-            const SizedBox(
-              height: defaultPaddingSize / 2,
-            ),
+
             CustomTextField(controller: _purposeController, label: "Purpose"),
             const SizedBox(
               height: defaultPaddingSize / 2,
             ),
-            CustomButton(
+            SizedBox(
+              width: MediaQuery.of(context).size.width*0.3,
+              child: CustomTextButton(
+                padding: 16,
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
                 callback: () {
-                  callService();
-                },
-                buttonText: "Save")
+                  if (validation()) {
+                    callService();
+                  }
+                }, text: 'Save',),
+            )
           ],
         ),
       ),

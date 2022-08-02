@@ -32,20 +32,20 @@ class Datum {
 
   String userName;
   String userId;
-  DateTime date;
+  String date;
   String status;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     userName: json["user_name"],
     userId: json["user_id"],
-    date: DateTime.parse(json["date"]),
+    date: json["date"],
     status: json["status"],
   );
 
   Map<String, dynamic> toJson() => {
     "user_name": userName,
     "user_id": userId,
-    "date": date.toIso8601String(),
+    "date": date,
     "status": status,
   };
 }

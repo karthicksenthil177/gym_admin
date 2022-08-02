@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gym_admin/api/api_call.dart';
 import 'package:gym_admin/util.dart';
+import 'package:gym_admin/widget/app_bar.dart';
 import 'package:gym_admin/widget/button.dart';
 import 'package:gym_admin/widget/gradient_text.dart';
+import 'package:gym_admin/widget/text_button.dart';
 import 'attendance_list.dart';
 
 class Attendance extends StatefulWidget {
@@ -28,25 +30,7 @@ class _AttendanceState extends State<Attendance> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: defaultPaddingSize,
-          ),
-          Container(
-            width: 100,
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(defaultPaddingSize / 1.5),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(defaultPaddingSize * 1.5),
-                bottomRight: Radius.circular(defaultPaddingSize * 1.5),
-              ),
-            ),
-            child: const Text(
-              "Attendance",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+          CustomAppBar(title: "Attendance"),
           FutureBuilder<AttendanceList>(
               future: attendanceList,
               builder: (BuildContext context,
@@ -83,91 +67,146 @@ class _AttendanceState extends State<Attendance> {
   }
 
   Widget attendanceDetails(Datum elementAt) {
+
     return InkWell(
-      onTap: () {
-        _modalBottomSheetMenu(elementAt.userId);
+      onTap: (){
+        showDialogue(elementAt);
       },
-      child: Card(
-        margin: const EdgeInsets.symmetric(vertical: defaultPaddingSize / 4),
-        child: Container(
-          padding: const EdgeInsets.all(defaultPaddingSize),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(elementAt.userName),
-                  GradientText(
-                    child: Text(
-                      elementAt.status,
-                      style: const TextStyle(color: Colors.white, fontSize: 10),
-                    ),
-                    gradient: LinearGradient(
-                      colors: <Color>[
-                        Colors.lightBlue,
-                        Colors.lightBlue.withOpacity(0.5),
-                      ],
-                    ),
+      child: Container(
+        padding: const EdgeInsets.all(defaultPaddingSize),
+        margin:
+        const EdgeInsets.symmetric(vertical: defaultPaddingSize / 4,horizontal: defaultPaddingSize/4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: greyColor,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*0.60,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(elementAt.userName,style: const TextStyle(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold),),
+                      SizedBox(height: 4,),
+                      Text(elementAt.status,
+                        style: const TextStyle(color: Colors.black45,),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: defaultPaddingSize / 2,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Endurance Training",
-                    style: TextStyle(color: lightBlackColor, fontSize: 12),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+                Spacer(),
+                Icon(Icons.chevron_right,color: Colors.black45,),
+              ],
+            ),
+
+          ],
         ),
       ),
     );
   }
 
-  void _modalBottomSheetMenu(String userId) {
-    showModalBottomSheet(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(defaultPaddingSize),
-            topRight: Radius.circular(defaultPaddingSize),
-          ),
-        ),
+  void showDialogue(Datum userId) {
+
+    showDialog(
         context: context,
-        builder: (builder) {
-          return Container(
-              padding: const EdgeInsets.all(defaultPaddingSize),
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(defaultPaddingSize),
-                      topRight: Radius.circular(defaultPaddingSize))),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomButton(callback: () {
-                    callService(context,true, userId);
-                  }, buttonText: "Present"),
-                  const SizedBox(
-                    height: defaultPaddingSize,
-                  ),
-                  const Text(
-                    "OR",
-                    style: TextStyle(
-                        color: Colors.grey, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: defaultPaddingSize,
-                  ),
-                  CustomButton(callback: () {callService(context,false,userId); }, buttonText: "Absent")
-                ],
-              ));
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius:
+                BorderRadius.circular(20.0)), //this right here
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.only(left : 12.0,right: 12.0,top: 12.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 16,),
+                    Center(child: Text(userId.userName,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),)),
+                    SizedBox(height: 16,),
+                    Center(child: Text(userId.date.toString(),style: TextStyle(fontWeight: FontWeight.w500),)),
+                    SizedBox(height: 32,),
+                    Row(children: [
+                      Expanded(
+                        child: CustomTextButton(
+                            padding: 16,
+                            color: Colors.white,
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                            text: "Present", callback: (){
+                          callService(context,true, userId.userId);
+                          Navigator.of(context).pop();
+                        }),
+                      ),
+                      SizedBox(width: 8,),
+                      Expanded(
+                        child: CustomTextButton(
+                            padding: 16,
+                            text: "Absent", callback: (){
+                          callService(context,false,userId.userId);
+                          Navigator.of(context).pop();
+                        }),
+                      ),
+                    ],),
+                    Container(
+                      width: double.infinity,
+                      child: TextButton(onPressed: (){
+                        Navigator.of(context).pop();
+                      }, child: Text("Cancel",textAlign: TextAlign.center,)),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
         });
+    // showModalBottomSheet(
+    //     shape: const RoundedRectangleBorder(
+    //       borderRadius: BorderRadius.only(
+    //         topLeft: Radius.circular(defaultPaddingSize),
+    //         topRight: Radius.circular(defaultPaddingSize),
+    //       ),
+    //     ),
+    //     context: context,
+    //     builder: (builder) {
+    //       return Container(
+    //           padding: const EdgeInsets.all(defaultPaddingSize),
+    //           decoration: const BoxDecoration(
+    //               color: Colors.white,
+    //               borderRadius: BorderRadius.only(
+    //                   topLeft: Radius.circular(defaultPaddingSize),
+    //                   topRight: Radius.circular(defaultPaddingSize))),
+    //           child: Column(
+    //             mainAxisSize: MainAxisSize.min,
+    //             children: [
+    //               CustomButton(callback: () {
+    //                 callService(context,true, userId);
+    //               }, buttonText: "Present"),
+    //               const SizedBox(
+    //                 height: defaultPaddingSize,
+    //               ),
+    //               const Text(
+    //                 "OR",
+    //                 style: TextStyle(
+    //                     color: Colors.grey, fontWeight: FontWeight.bold),
+    //               ),
+    //               const SizedBox(
+    //                 height: defaultPaddingSize,
+    //               ),
+    //               CustomButton(callback: () {callService(context,false,userId); }, buttonText: "Absent")
+    //             ],
+    //           ));
+    //     });
   }
 
 

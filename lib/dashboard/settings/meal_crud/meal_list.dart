@@ -30,10 +30,15 @@ class _MealListState extends State<MealList> {
           title: "Meals",
         ),
         backgroundColor: backgroundColor,
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+        floatingActionButton: FloatingActionButton(onPressed: () async {
+          final result = await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
             return const MealCreate();
           }));
+          if(result){
+            setState(() {
+              response = ApiCall().mealList();
+            });
+          }
         },
           child: const Icon(Icons.add),),
         body: Padding(padding: const EdgeInsets.all(defaultPaddingSize),
@@ -48,38 +53,41 @@ class _MealListState extends State<MealList> {
                       return ListView.builder(
                         itemCount: snapshot.data!.data.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Card(
+                          return Container(
+                            padding: const EdgeInsets.all(defaultPaddingSize),
                             margin:
                             const EdgeInsets.symmetric(vertical: defaultPaddingSize / 4),
-                            child: Container(
-                              padding: const EdgeInsets.all(defaultPaddingSize),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(snapshot.data!.data.elementAt(index).name),
-                                      Text(
-                                        snapshot.data!.data.elementAt(index).purpose,
-                                        style: const TextStyle(color: Colors.grey, fontSize: 10),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: defaultPaddingSize / 2,
-                                  ),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: Text(
-                                      snapshot.data!.data.elementAt(index).description,
-                                      textAlign: TextAlign.start,
-                                      maxLines: 5,
-                                      style: TextStyle(
-                                          color: lightBlackColor, fontSize: 12),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: greyColor,
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width*0.60,
+                                      child: Text(snapshot.data!.data.elementAt(index).name,style: const TextStyle(
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.bold),),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                    Text(
+                                      snapshot.data!.data.elementAt(index).purpose,
+                                      style: const TextStyle(color: Colors.black45, fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: defaultPaddingSize / 2,
+                                ),
+                                Text(
+                                  snapshot.data!.data.elementAt(index).description,
+                                  maxLines: 50,
+                                  style: const TextStyle(color: Colors.black45, fontSize: 14),
+                                ),
+                              ],
                             ),
                           );
                         },);

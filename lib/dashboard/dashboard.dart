@@ -27,6 +27,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -59,11 +60,11 @@ class _DashboardState extends State<Dashboard> {
                     text: 'Home',
                   ),
                   GButton(
-                    icon: Icons.list_alt_outlined,
+                    icon: Icons.checklist_rtl_rounded,
                     text: 'Attendances',
                   ),
                   GButton(
-                    icon: Icons.fitness_center,
+                    icon: Icons.add_task,
                     text: 'Assign',
                   ),
                   GButton(

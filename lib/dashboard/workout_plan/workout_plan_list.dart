@@ -40,33 +40,43 @@ class _WorkoutPlanListUIState extends State<WorkoutPlanListUI> {
                         onTap: () {
                           _modalBottomSheetMenu(snapshot.data!.data.elementAt(index).workoutPlan.id);
                         },
-                        child: Card(
+                        child :  Container(
+                          padding: const EdgeInsets.all(defaultPaddingSize),
                           margin:
-                          const EdgeInsets.symmetric(vertical: defaultPaddingSize / 4),
-                          child: Container(
-                            padding: const EdgeInsets.all(defaultPaddingSize),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(snapshot.data!.data.elementAt(index).workoutPlan.planName),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: defaultPaddingSize / 2,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      snapshot.data!.data.elementAt(index).workoutPlan.planPurpose,
-                                      style: TextStyle(color: lightBlackColor, fontSize: 12),
+                          const EdgeInsets.symmetric(vertical: defaultPaddingSize / 4,horizontal: defaultPaddingSize/4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: greyColor,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width*0.60,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(snapshot.data!.data.elementAt(index).workoutPlan.planName,style: const TextStyle(
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.bold),),
+                                        SizedBox(height: 4,),
+                                        Text(snapshot.data!.data.elementAt(index).workoutPlan.planPurpose,
+                                          style: const TextStyle(color: Colors.black45,),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                  Spacer(),
+                                  Icon(Icons.chevron_right,color: Colors.black45,),
+                                ],
+                              ),
+
+                            ],
                           ),
                         ),
                       );
@@ -81,6 +91,7 @@ class _WorkoutPlanListUIState extends State<WorkoutPlanListUI> {
 
   void _modalBottomSheetMenu(String planId) {
     showModalBottomSheet(
+      backgroundColor: greyColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(defaultPaddingSize),
@@ -168,15 +179,36 @@ class _SearchUserState extends State<SearchUser> {
           height: 35,
           margin: const EdgeInsets.all(defaultPaddingSize),
           child: TextField(
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.only(
-                  left: defaultPaddingSize,
-                  right: defaultPaddingSize,
-                  bottom: defaultPaddingSize / 2,
-                  top: defaultPaddingSize / 2),
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(left: 12),
+              focusedBorder:  OutlineInputBorder(
+                // width: 0.0 produces a thin "hairline" border
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide:  BorderSide(color: greyColor, width: 0.0),
+              ),
+              errorBorder:  OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                // width: 0.0 produces a thin "hairline" border
+                borderSide:  BorderSide(color: greyColor, width: 0.0),
+              ),
+              disabledBorder:  OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                // width: 0.0 produces a thin "hairline" border
+                borderSide:  BorderSide(color: greyColor, width: 0.0),
+              ),
+              enabledBorder:  OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                // width: 0.0 produces a thin "hairline" border
+                borderSide:  BorderSide(color: greyColor, width: 0.0),
+
+              ),
+              border:OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              filled: true,
+              fillColor: greyColor,
               hintText: "Search",
               suffixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
             ),
             onChanged: (value) {
               setState(() {
@@ -207,12 +239,15 @@ class _SearchUserState extends State<SearchUser> {
                               .elementAt(index)
                               .name);
                     },
-                    leading: const Icon(Icons.account_balance_outlined),
-                    title: Text(searchList.elementAt(index).name),
-                    trailing:
-                    const Icon(Icons.keyboard_arrow_right)
-
-                );
+                  title: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 4,),
+                      Icon(Icons.circle,size: 12,color: greyColor,),
+                      SizedBox(width: 8,),
+                      Expanded(child: Text(searchList.elementAt(index).name,maxLines: 5,)),
+                    ],
+                  ),);
               }),
         ),
       ],
